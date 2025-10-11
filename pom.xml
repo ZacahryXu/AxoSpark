@@ -21,6 +21,7 @@
         <module>axospark-history</module>
         <module>axospark-me</module>
         <module>axospark-updates</module>
+        <module>axospark-demo</module>
     </modules>
 
     <properties>
@@ -36,6 +37,10 @@
         <mysql.version>8.2.0</mysql.version>
         <lombok.version>1.18.30</lombok.version>
         <springdoc.version>2.2.0</springdoc.version>
+        <websocket.version>2.0.4.RELEASE</websocket.version>
+        <oshi.version>3.9.1</oshi.version>
+        <hutool.version>5.8.25</hutool.version>
+        <guava.version>31.1-jre</guava.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -85,6 +90,28 @@
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${springdoc.version}</version>
             </dependency>
+            <!-- Spring WebSocket-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-websocket</artifactId>
+                <version>${websocket.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.oshi</groupId>
+                <artifactId>oshi-core</artifactId>
+                <version>${oshi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -99,6 +126,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
