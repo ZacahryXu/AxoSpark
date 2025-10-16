@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    redirect: '/danmaku-demo',
+    redirect: '/home',
   },
   {
     path: '/ws-test',
@@ -15,6 +15,16 @@ const routes = [
     name: 'danmaku-demo',
     component: () => import('../views/DanmakuDemo.vue'),
   },
+  {
+    path:'/home',
+    name: 'home',
+    component: () => import('../views/WebHome/WebHomePage.vue'),
+  },
+  {
+    path:'/login',
+    name: 'login',
+    component: () => import('../views/Login/Index.vue'),
+  }
 ]
 
 const router = createRouter({

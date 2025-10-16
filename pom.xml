@@ -22,6 +22,9 @@
         <module>axospark-me</module>
         <module>axospark-updates</module>
         <module>axospark-demo</module>
+        <module>axospark-auth</module>
+        <module>axospark-pojo</module>
+        <module>mybatis-generator</module>
     </modules>
 
     <properties>
@@ -41,6 +44,7 @@
         <oshi.version>3.9.1</oshi.version>
         <hutool.version>5.8.25</hutool.version>
         <guava.version>31.1-jre</guava.version>
+        <sa-token.version>1.44.0</sa-token.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -111,6 +115,11 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-spring-boot3-starter</artifactId>
+                <version>${sa-token.version}</version>
             </dependency>
 
         </dependencies>

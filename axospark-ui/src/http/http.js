@@ -31,8 +31,8 @@ http.interceptors.response.use(
     const payload = response.data
     if (payload && typeof payload === 'object' && 'code' in payload) {
       const code = payload.code
-      if (code === 0 || code === 200) {
-        return payload.data
+      if (code === 1 || code === 200) {
+        return payload
       }
       const message = payload.message || '请求失败'
       return Promise.reject(new Error(message))

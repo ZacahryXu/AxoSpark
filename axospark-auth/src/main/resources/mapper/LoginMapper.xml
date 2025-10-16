@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="icu.axospark.mapper.LoginMapper">
+
+    <resultMap id="BaseResultMap" type="icu.axospark.pojo.entity.Users">
+            <id property="id" column="id" />
+            <result property="username" column="username" />
+            <result property="email" column="email" />
+            <result property="passwordHash" column="password_hash" />
+            <result property="nickname" column="nickname" />
+            <result property="avatarUrl" column="avatar_url" />
+            <result property="bio" column="bio" />
+            <result property="status" column="status" />
+            <result property="createTime" column="create_time" />
+            <result property="updateTime" column="update_time" />
+            <result property="updateBy" column="update_by" />
+            <result property="createBy" column="create_by" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,username,email,password_hash,nickname,avatar_url,
+        bio,status,create_time,update_time,update_by,
+        create_by
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from users
+        where  id = #{id} 
+    </select>
+    <select id="selectByUsername" resultType="icu.axospark.pojo.entity.Users">
+        select * from users where username = #{username}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from users
+        where  id = #{id} 
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="icu.axospark.pojo.entity.Users" useGeneratedKeys="true">
+        insert into users
+        ( id,username,email,password_hash,nickname,avatar_url,
+        bio,status,create_time,update_time,update_by,
+        create_by)
+        values (#{id},#{username},#{email},#{passwordHash},#{nickname},#{avatarUrl},
+        #{bio},#{status},#{createTime},#{updateTime},#{updateBy},
+        #{createBy})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="icu.axospark.pojo.entity.Users" useGeneratedKeys="true">
+        insert into users
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="username != null">username,</if>
+                <if test="email != null">email,</if>
+                <if test="passwordHash != null">password_hash,</if>
+                <if test="nickname != null">nickname,</if>
+                <if test="avatarUrl != null">avatar_url,</if>
+                <if test="bio != null">bio,</if>
+                <if test="status != null">status,</if>
+                <if test="createTime != null">create_time,</if>
+                <if test="updateTime != null">update_time,</if>
+                <if test="updateBy != null">update_by,</if>
+                <if test="createBy != null">create_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id},</if>
+                <if test="username != null">#{username},</if>
+                <if test="email != null">#{email},</if>
+                <if test="passwordHash != null">#{passwordHash},</if>
+                <if test="nickname != null">#{nickname},</if>
+                <if test="avatarUrl != null">#{avatarUrl},</if>
+                <if test="bio != null">#{bio},</if>
+                <if test="status != null">#{status},</if>
+                <if test="createTime != null">#{createTime},</if>
+                <if test="updateTime != null">#{updateTime},</if>
+                <if test="updateBy != null">#{updateBy},</if>
+                <if test="createBy != null">#{createBy},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="icu.axospark.pojo.entity.Users">
+        update users
+        <set>
+                <if test="username != null">
+                    username = #{username},
+                </if>
+                <if test="email != null">
+                    email = #{email},
+                </if>
+                <if test="passwordHash != null">
+                    password_hash = #{passwordHash},
+                </if>
+                <if test="nickname != null">
+                    nickname = #{nickname},
+                </if>
+                <if test="avatarUrl != null">
+                    avatar_url = #{avatarUrl},
+                </if>
+                <if test="bio != null">
+                    bio = #{bio},
+                </if>
+                <if test="status != null">
+                    status = #{status},
+                </if>
+                <if test="createTime != null">
+                    create_time = #{createTime},
+                </if>
+                <if test="updateTime != null">
+                    update_time = #{updateTime},
+                </if>
+                <if test="updateBy != null">
+                    update_by = #{updateBy},
+                </if>
+                <if test="createBy != null">
+                    create_by = #{createBy},
+                </if>
+        </set>
+        where   id = #{id} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="icu.axospark.pojo.entity.Users">
+        update users
+        set 
+            username =  #{username},
+            email =  #{email},
+            password_hash =  #{passwordHash},
+            nickname =  #{nickname},
+            avatar_url =  #{avatarUrl},
+            bio =  #{bio},
+            status =  #{status},
+            create_time =  #{createTime},
+            update_time =  #{updateTime},
+            update_by =  #{updateBy},
+            create_by =  #{createBy}
+        where   id = #{id} 
+    </update>
+</mapper>

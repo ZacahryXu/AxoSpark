@@ -1,6 +1,7 @@
 import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
+import tailwindcss from "@tailwindcss/vite";
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
@@ -8,7 +9,9 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 export default defineConfig({
   plugins: [
     vue(),
-    vueDevTools(),
+    tailwindcss(),
+    vueDevTools()
+
   ],
   resolve: {
     alias: {
@@ -23,7 +26,7 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
         // 如后端没有 /api 前缀，则去掉
-        // rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
