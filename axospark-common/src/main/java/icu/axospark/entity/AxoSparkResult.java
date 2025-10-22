@@ -1,11 +1,11 @@
-package entity;
+package icu.axospark.entity;
 
 import lombok.Data;
 
 import java.io.Serializable;
 
-import static constant.ResultCode.SUCCESS;
-import static constant.ResultCode.SUCCESS_MSG;
+import static icu.axospark.constant.ResultCode.SUCCESS;
+import static icu.axospark.constant.ResultCode.SUCCESS_MSG;
 
 @Data
 public class AxoSparkResult<T> implements Serializable {

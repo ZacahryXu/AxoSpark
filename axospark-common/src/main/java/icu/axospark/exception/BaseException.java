@@ -1,4 +1,4 @@
-package exception;
+package icu.axospark.exception;
 
 public class BaseException extends RuntimeException{
     public BaseException(){

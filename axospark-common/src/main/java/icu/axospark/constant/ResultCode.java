@@ -1,4 +1,4 @@
-package constant;
+package icu.axospark.constant;
 
 public class ResultCode {
     public static final int SUCCESS = 1;

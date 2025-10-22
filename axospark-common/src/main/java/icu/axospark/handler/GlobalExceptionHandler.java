@@ -1,10 +1,9 @@
-package handler;
+package icu.axospark.handler;
 
-import entity.AxoSparkResult;
-import exception.BaseException;
+import icu.axospark.entity.AxoSparkResult;
+import icu.axospark.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice

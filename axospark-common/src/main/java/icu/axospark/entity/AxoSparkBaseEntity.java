@@ -1,4 +1,4 @@
-package entity;
+package icu.axospark.entity;
 
 import lombok.Data;
 

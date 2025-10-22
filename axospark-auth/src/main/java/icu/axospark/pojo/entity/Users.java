@@ -1,8 +1,7 @@
 package icu.axospark.pojo.entity;
 
-import entity.AxoSparkBaseEntity;
+import icu.axospark.entity.AxoSparkBaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 
 /**

@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Play,User,Lock } from 'lucide-vue-next'
 import {ref, computed, onMounted, onBeforeMount} from "vue"
 import { useRouter } from 'vue-router'
-import { login, doRegister, sendVerificationCode } from '@/api'
+import { login, doRegister, sendVerificationCode } from '@/api/login.js'
 
 // 页面状态
 const activeTab = ref('login') // 'login' or 'register'

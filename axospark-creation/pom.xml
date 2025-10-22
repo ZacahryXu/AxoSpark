@@ -24,6 +24,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>icu.axospark</groupId>
+            <artifactId>axospark-auth</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
         <!-- 内部模块依赖 - 包含所有通用依赖 -->
         <dependency>
@@ -31,6 +36,8 @@
             <artifactId>axospark-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
     </dependencies>
+
 
 </project>

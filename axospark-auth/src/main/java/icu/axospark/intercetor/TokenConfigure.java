@@ -19,7 +19,8 @@ public class TokenConfigure implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        String[] excludePatterns = new String[]{"/api/v1/sys/login",
+        String[] excludePatterns = new String[]{
+                "/login",
                 "/doc.html/**",
                 "/swagger-ui/**",
                 "/swagger-ui.html",
@@ -29,7 +30,10 @@ public class TokenConfigure implements WebMvcConfigurer {
                 "/swagger-ui.html/**",
                 "/api",
                 "/api-docs",
-                "/api-docs/**"};
+                "/api-docs/**",
+                // "/video/**",
+                "/hello"
+        };
         // 注册 Sa-Token 拦截器，打开注解式鉴权功能
         registry.addInterceptor(new SaInterceptor(handle -> StpUtil.checkLogin()))
                 .addPathPatterns("/**")

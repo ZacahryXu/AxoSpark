@@ -43,7 +43,7 @@ import Cookies from 'js-cookie'
 import { ref,computed,onMounted } from 'vue'
 import {useRouter} from "vue-router";
 import {Button} from "@/components/ui/button/index.js";
-import { logout as logoutApi } from '@/api/index.js'
+import { logout as logoutApi } from '@/api/login.js'
 
 const router = useRouter()
 const isLoggedIn = ref(false)

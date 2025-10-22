@@ -1,10 +1,8 @@
 package icu.axospark.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
-import cn.dev33.satoken.util.SaResult;
-import entity.AxoSparkResult;
+import icu.axospark.entity.AxoSparkResult;
 import icu.axospark.pojo.dto.UsersDTO;
-import icu.axospark.pojo.entity.Users;
 import icu.axospark.service.LoginService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
