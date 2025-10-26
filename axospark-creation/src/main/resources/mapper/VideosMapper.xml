@@ -5,11 +5,11 @@
 <mapper namespace="icu.axospark.mapper.VideosMapper">
 
     <resultMap id="BaseResultMap" type="icu.axospark.pojo.entity.Videos">
-            <id property="id" column="id" />
+            <id property="videoId" column="video_id" />
             <result property="title" column="title" />
             <result property="description" column="description" />
             <result property="userId" column="user_id" />
-            <result property="categoryId" column="category_id" />
+            <result property="videoCategoryId" column="video_category_id" />
             <result property="filePath" column="file_path" />
             <result property="fileSize" column="file_size" />
             <result property="duration" column="duration" />
@@ -23,53 +23,53 @@
             <result property="commentCount" column="comment_count" />
             <result property="shareCount" column="share_count" />
             <result property="isPublic" column="is_public" />
-            <result property="tags" column="tags" />
             <result property="createTime" column="create_time" />
             <result property="updateTime" column="update_time" />
             <result property="updateBy" column="update_by" />
             <result property="createBy" column="create_by" />
+            <result property="originalName" column="original_name" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,title,description,user_id,category_id,file_path,
+        video_id,title,description,user_id,video_category_id,file_path,
         file_size,duration,width,height,format,
         thumbnail_url,status,view_count,like_count,comment_count,
-        share_count,is_public,tags,create_time,update_time,
-        update_by,create_by
+        share_count,is_public,create_time,update_time,update_by,
+        create_by,original_name
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from videos
-        where  id = #{id} 
+        where  video_id = #{videoId} 
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from videos
-        where  id = #{id} 
+        where  video_id = #{videoId} 
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="icu.axospark.pojo.entity.Videos" useGeneratedKeys="true">
+    <insert id="insert" keyColumn="video_id" keyProperty="videoId" parameterType="icu.axospark.pojo.entity.Videos" useGeneratedKeys="true">
         insert into videos
-        ( id,title,description,user_id,category_id,file_path,
+        ( video_id,title,description,user_id,video_category_id,file_path,
         file_size,duration,width,height,format,
         thumbnail_url,status,view_count,like_count,comment_count,
-        share_count,is_public,tags,create_time,update_time,
-        update_by,create_by,original_name)
-        values (#{id},#{title},#{description},#{userId},#{categoryId},#{filePath},
+        share_count,is_public,create_time,update_time,update_by,
+        create_by,original_name)
+        values (#{videoId},#{title},#{description},#{userId},#{videoCategoryId},#{filePath},
         #{fileSize},#{duration},#{width},#{height},#{format},
         #{thumbnailUrl},#{status},#{viewCount},#{likeCount},#{commentCount},
-        #{shareCount},#{isPublic},#{tags},#{createTime},#{updateTime},
-        #{updateBy},#{createBy},#{originalName})
+        #{shareCount},#{isPublic},#{createTime},#{updateTime},#{updateBy},
+        #{createBy},#{originalName})
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="icu.axospark.pojo.entity.Videos" useGeneratedKeys="true">
+    <insert id="insertSelective" keyColumn="video_id" keyProperty="videoId" parameterType="icu.axospark.pojo.entity.Videos" useGeneratedKeys="true">
         insert into videos
         <trim prefix="(" suffix=")" suffixOverrides=",">
-                <if test="id != null">id,</if>
+                <if test="videoId != null">video_id,</if>
                 <if test="title != null">title,</if>
                 <if test="description != null">description,</if>
                 <if test="userId != null">user_id,</if>
-                <if test="categoryId != null">category_id,</if>
+                <if test="videoCategoryId != null">video_category_id,</if>
                 <if test="filePath != null">file_path,</if>
                 <if test="fileSize != null">file_size,</if>
                 <if test="duration != null">duration,</if>
@@ -83,18 +83,18 @@
                 <if test="commentCount != null">comment_count,</if>
                 <if test="shareCount != null">share_count,</if>
                 <if test="isPublic != null">is_public,</if>
-                <if test="tags != null">tags,</if>
                 <if test="createTime != null">create_time,</if>
                 <if test="updateTime != null">update_time,</if>
                 <if test="updateBy != null">update_by,</if>
                 <if test="createBy != null">create_by,</if>
+                <if test="originalName != null">original_name,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-                <if test="id != null">#{id},</if>
+                <if test="videoId != null">#{videoId},</if>
                 <if test="title != null">#{title},</if>
                 <if test="description != null">#{description},</if>
                 <if test="userId != null">#{userId},</if>
-                <if test="categoryId != null">#{categoryId},</if>
+                <if test="videoCategoryId != null">#{videoCategoryId},</if>
                 <if test="filePath != null">#{filePath},</if>
                 <if test="fileSize != null">#{fileSize},</if>
                 <if test="duration != null">#{duration},</if>
@@ -108,11 +108,11 @@
                 <if test="commentCount != null">#{commentCount},</if>
                 <if test="shareCount != null">#{shareCount},</if>
                 <if test="isPublic != null">#{isPublic},</if>
-                <if test="tags != null">#{tags},</if>
                 <if test="createTime != null">#{createTime},</if>
                 <if test="updateTime != null">#{updateTime},</if>
                 <if test="updateBy != null">#{updateBy},</if>
                 <if test="createBy != null">#{createBy},</if>
+                <if test="originalName != null">#{originalName},</if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="icu.axospark.pojo.entity.Videos">
@@ -127,8 +127,8 @@
                 <if test="userId != null">
                     user_id = #{userId},
                 </if>
-                <if test="categoryId != null">
-                    category_id = #{categoryId},
+                <if test="videoCategoryId != null">
+                    video_category_id = #{videoCategoryId},
                 </if>
                 <if test="filePath != null">
                     file_path = #{filePath},
@@ -169,9 +169,6 @@
                 <if test="isPublic != null">
                     is_public = #{isPublic},
                 </if>
-                <if test="tags != null">
-                    tags = #{tags},
-                </if>
                 <if test="createTime != null">
                     create_time = #{createTime},
                 </if>
@@ -184,8 +181,11 @@
                 <if test="createBy != null">
                     create_by = #{createBy},
                 </if>
+                <if test="originalName != null">
+                    original_name = #{originalName},
+                </if>
         </set>
-        where   id = #{id} 
+        where   video_id = #{videoId} 
     </update>
     <update id="updateByPrimaryKey" parameterType="icu.axospark.pojo.entity.Videos">
         update videos
@@ -193,7 +193,7 @@
             title =  #{title},
             description =  #{description},
             user_id =  #{userId},
-            category_id =  #{categoryId},
+            video_category_id =  #{videoCategoryId},
             file_path =  #{filePath},
             file_size =  #{fileSize},
             duration =  #{duration},
@@ -207,11 +207,11 @@
             comment_count =  #{commentCount},
             share_count =  #{shareCount},
             is_public =  #{isPublic},
-            tags =  #{tags},
             create_time =  #{createTime},
             update_time =  #{updateTime},
             update_by =  #{updateBy},
-            create_by =  #{createBy}
-        where   id = #{id} 
+            create_by =  #{createBy},
+            original_name =  #{originalName}
+        where   video_id = #{videoId} 
     </update>
 </mapper>

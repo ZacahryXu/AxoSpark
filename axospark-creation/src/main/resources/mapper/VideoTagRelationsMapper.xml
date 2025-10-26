@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="icu.axospark.mapper.VideoTagRelationsMapper">
+
+    <resultMap id="BaseResultMap" type="icu.axospark.pojo.entity.VideoTagRelations">
+            <id property="id" column="id" />
+            <result property="videoId" column="video_id" />
+            <result property="tagId" column="tag_id" />
+            <result property="createTime" column="create_time" />
+            <result property="updateTime" column="update_time" />
+            <result property="updateBy" column="update_by" />
+            <result property="createBy" column="create_by" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,video_id,tag_id,create_time,update_time,update_by,
+        create_by
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from video_tag_relations
+        where  id = #{id} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from video_tag_relations
+        where  id = #{id} 
+    </delete>
+    <delete id="deleteByVideoId">
+        delete from video_tag_relations
+        where video_id  = #{videoId};
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="icu.axospark.pojo.entity.VideoTagRelations" useGeneratedKeys="true">
+        insert into video_tag_relations
+        ( id,video_id,tag_id,create_time,update_time,update_by,
+        create_by)
+        values (#{id},#{videoId},#{tagId},#{createTime},#{updateTime},#{updateBy},
+        #{createBy})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="icu.axospark.pojo.entity.VideoTagRelations" useGeneratedKeys="true">
+        insert into video_tag_relations
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="videoId != null">video_id,</if>
+                <if test="tagId != null">tag_id,</if>
+                <if test="createTime != null">create_time,</if>
+                <if test="updateTime != null">update_time,</if>
+                <if test="updateBy != null">update_by,</if>
+                <if test="createBy != null">create_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id},</if>
+                <if test="videoId != null">#{videoId},</if>
+                <if test="tagId != null">#{tagId},</if>
+                <if test="createTime != null">#{createTime},</if>
+                <if test="updateTime != null">#{updateTime},</if>
+                <if test="updateBy != null">#{updateBy},</if>
+                <if test="createBy != null">#{createBy},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="icu.axospark.pojo.entity.VideoTagRelations">
+        update video_tag_relations
+        <set>
+                <if test="videoId != null">
+                    video_id = #{videoId},
+                </if>
+                <if test="tagId != null">
+                    tag_id = #{tagId},
+                </if>
+                <if test="createTime != null">
+                    create_time = #{createTime},
+                </if>
+                <if test="updateTime != null">
+                    update_time = #{updateTime},
+                </if>
+                <if test="updateBy != null">
+                    update_by = #{updateBy},
+                </if>
+                <if test="createBy != null">
+                    create_by = #{createBy},
+                </if>
+        </set>
+        where   id = #{id} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="icu.axospark.pojo.entity.VideoTagRelations">
+        update video_tag_relations
+        set 
+            video_id =  #{videoId},
+            tag_id =  #{tagId},
+            create_time =  #{createTime},
+            update_time =  #{updateTime},
+            update_by =  #{updateBy},
+            create_by =  #{createBy}
+        where   id = #{id} 
+    </update>
+</mapper>

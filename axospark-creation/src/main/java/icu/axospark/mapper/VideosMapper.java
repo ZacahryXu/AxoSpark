@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 /**
 * @author ZacharyXu
 * @description 针对表【videos(视频表)】的数据库操作Mapper
-* @createDate 2025-10-15 13:57:37
+* @createDate 2025-10-25 17:07:54
 * @Entity generator.domain.Videos
 */
 @Mapper

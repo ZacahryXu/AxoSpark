@@ -1,9 +1,9 @@
 package icu.axospark.pojo.entity;
 
-import java.util.Date;
-
 import icu.axospark.entity.AxoSparkBaseEntity;
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * 视频表
@@ -11,6 +11,10 @@ import lombok.Data;
  */
 @Data
 public class Videos extends AxoSparkBaseEntity {
+    /**
+     * 视频ID
+     */
+    private Long videoId;
 
     /**
      * 视频标题
@@ -30,7 +34,7 @@ public class Videos extends AxoSparkBaseEntity {
     /**
      * 视频分类ID(逻辑外键)
      */
-    private Long categoryId;
+    private Long videoCategoryId;
 
     /**
      * 视频文件路径
@@ -97,13 +101,9 @@ public class Videos extends AxoSparkBaseEntity {
      */
     private Integer isPublic;
 
-    /**
-     * 标签(逗号分隔)
-     */
-    private String tags;
+
     /**
      * 原始文件名
      */
     private String originalName;
-
 }

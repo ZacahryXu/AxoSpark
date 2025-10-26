@@ -1,7 +1,9 @@
 <script setup>
-import { ref, computed } from 'vue'
+import {ref, computed, onMounted} from 'vue'
 import {postVideo,upload} from '@/api/io.js'
-
+import {getVideoAllCategories} from '@/api/catrgories.js'
+import WebHeader from "@/components/layout/WebHeader.vue";
+import { X } from 'lucide-vue-next';
 const selectedFile = ref(null)
 const uploading = ref(false)
 const uploadProgress = ref(0)
@@ -14,12 +16,34 @@ const formData = ref({
   id: null,
   title: '',
   description: '',
-  category: 1,
-  filePath: ''
+  category: null,
+  filePath: '',
+  tagsNames: ['动画', '原创'],
+  createTime:null
 })
 const dragActive = ref(false)
 const fileInputRef = ref(null)
-
+const categories = ref([])
+const tags = ref(['动画', '原创']);
+const inputValue = ref('');
+const maxTags = 10;
+const fetchCategories = async () => {
+  try {
+    const result = await getVideoAllCategories() // 需要在 @/api/io.js 中添加
+    categories.value = result.data
+  } catch (error) {
+    console.error('获取分类失败', error)
+    // 失败时使用默认分类
+    categories.value = [
+      {id: 1, name: '动画'},
+      {id: 2, name: '音乐'},
+      {id: 3, name: '游戏'},
+      {id: 4, name: '生活'},
+      {id: 5, name: '科技'},
+      {id: 6, name: '娱乐'}
+    ]
+  }
+}
 const handleBlock = (e) => {
   e.preventDefault()
   e.stopPropagation()
@@ -62,7 +86,7 @@ const handleFile = async (file) => {
 
   selectedFile.value = file
   formData.value.title = file.name.replace(/\.[^/.]+$/, '')
-
+  await fetchCategories()
   // 立即开始上传并显示进度
   uploading.value = true
   uploadProgress.value = 0
@@ -84,9 +108,8 @@ const handleFile = async (file) => {
 
   try {
     const result = await upload(uploadFormData)
-    console.log(result.data.id)
-    formData.value.id = result.data.id
-    formData.value.filePath = result.data.filePath
+    formData.value = { ...formData.value, ...result.data }
+
     clearInterval(progressInterval)
     uploadProgress.value = 100
     processingSteps.value.upload = 'completed'
@@ -145,7 +168,8 @@ const handleSubmit = async () => {
       category: formData.value.category,
       title: formData.value.title,
       filePath: formData.value.filePath,
-
+      tagsNames: formData.value.tagsNames,
+      createTime:formData.value.createTime
     }
 
     // 需要在 @/api/io.js 中添加 postVideo 接口
@@ -198,17 +222,7 @@ const getStepStatus = (step) => {
   return processingSteps.value[step]
 }
 
-const getCategoryName = (category) => {
-  const names = {
-    animation: '动画',
-    music: '音乐',
-    game: '游戏',
-    vlog: '生活',
-    tech: '科技',
-    entertainment: '娱乐'
-  }
-  return names[category] || category
-}
+
 
 const fileSizeMB = computed(() => {
   return selectedFile.value ? (selectedFile.value.size / (1024 * 1024)).toFixed(2) : 0
@@ -217,8 +231,34 @@ const fileSizeMB = computed(() => {
 const remainingTime = computed(() => {
   return Math.ceil((100 - uploadProgress.value) / 10)
 })
+const addTag = () => {
+  const trimmed = inputValue.value.trim();
+  if (!trimmed) return;
 
-import WebHeader from "@/components/layout/WebHeader.vue";
+  if (formData.value.tagsNames.length >= maxTags) {
+    alert(`最多只能添加 ${maxTags} 个标签`);
+    return;
+  }
+  if (formData.value.tagsNames.includes(trimmed)) {
+    alert('标签已存在');
+    return;
+  }
+  if (trimmed.length > 20) {
+    alert('标签长度不能超过 20 个字符');
+    return;
+  }
+
+  formData.value.tagsNames.push(trimmed);
+  inputValue.value = '';
+};
+const removeTag = (index) => {
+  formData.value.tagsNames.value.splice(index, 1);
+};
+onMounted(async ()=>{
+
+
+})
+
 </script>
 
 <template>
@@ -320,7 +360,7 @@ import WebHeader from "@/components/layout/WebHeader.vue";
                   <div class="flex-1">
                     <h3 class="font-medium mb-1">{{ selectedFile?.name }}</h3>
                     <p class="text-sm text-gray-400">
-                      {{ fileSizeMB }} MB • {{ getCategoryName(formData.category) }}分类
+                      {{ fileSizeMB }} MB
                     </p>
                   </div>
                 </div>
@@ -452,13 +492,29 @@ import WebHeader from "@/components/layout/WebHeader.vue";
                         :disabled="!uploadCompleted"
                         class="w-full px-4 py-3 bg-slate-800/50 border border-gray-600 rounded-lg focus:outline-none focus:border-purple-500 transition disabled:opacity-50"
                     >
-                      <option value="1">动画</option>
-                      <option value="2">音乐</option>
-                      <option value="3">游戏</option>
-                      <option value="4">生活</option>
-                      <option value="5">科技</option>
-                      <option value="6">娱乐</option>
+                      <option v-for="cat in categories" :key="cat.id" :value="cat.id">
+                        {{cat.name}}
+                      </option>
+
                     </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-2">标签</label>
+                    <div class="tag-input">
+                        <span v-for="(tag, index) in formData.tagsNames" :key="index" class="tag">
+                          {{ tag }}
+                          <X class="w-4 h-4" @click="removeTag(index)" />
+                        </span>
+                      <input
+                          type="text"
+                          v-model="inputValue"
+                          @keydown.enter.prevent="addTag"
+                          @blur="addTag"
+                          placeholder="添加标签..."
+                          class="flex-1 bg-transparent border-none outline-none min-w-[120px]"
+                      >
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">最多添加 {{ maxTags }} 个标签</p>
                   </div>
                 </div>
               </div>
@@ -651,4 +707,5 @@ input:focus, textarea:focus, select:focus {
   align-items: center;
   gap: 0.5rem;
 }
+
 </style>
