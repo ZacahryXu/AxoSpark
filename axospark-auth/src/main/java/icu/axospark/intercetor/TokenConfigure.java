@@ -32,7 +32,8 @@ public class TokenConfigure implements WebMvcConfigurer {
                 "/api-docs",
                 "/api-docs/**",
                 // "/video/**",
-                "/hello"
+                "/hello",
+                "/upload/**"
         };
         // 注册 Sa-Token 拦截器，打开注解式鉴权功能
         registry.addInterceptor(new SaInterceptor(handle -> StpUtil.checkLogin()))

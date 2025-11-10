@@ -4,7 +4,10 @@ target/
 !**/src/test/**/target/
 !prototype/**
 /axospark-home/src/main/resources/application.yaml
-
+### ffmpeg ###
+axospark-common/src/main/lib/ffmpeg/windows/ffmpeg.exe
+axospark-common/src/main/lib/ffmpeg/windows/ffplay.exe
+axospark-common/src/main/lib/ffmpeg/windows/ffprobe.exe
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml

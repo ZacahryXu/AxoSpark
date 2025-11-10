@@ -2,6 +2,7 @@ package icu.axospark.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import icu.axospark.entity.AxoSparkResult;
+import icu.axospark.pojo.dto.PreUploadDTO;
 import icu.axospark.pojo.dto.VideosDTO;
 import icu.axospark.pojo.vo.VideosVO;
 import icu.axospark.service.VideoUploadService;
@@ -36,6 +37,7 @@ public class VideoUploadController {
         videoUploadService.postVideo(videosDTO,StpUtil.getLoginIdAsLong());
         return AxoSparkResult.success();
     }
+
 
     /*String originalFilename = videoFile.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));

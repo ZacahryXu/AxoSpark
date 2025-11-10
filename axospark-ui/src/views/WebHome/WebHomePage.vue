@@ -31,7 +31,7 @@ const handleCategorySelect = (categoryId) => {
 }
 
 const handleVideoClick = (video) => {
-  console.log('Clicked video:', video)
+  console.log('Clicked Video:', video)
   // 跳转到视频播放页
 }
 </script>

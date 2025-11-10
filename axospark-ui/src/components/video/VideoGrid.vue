@@ -43,13 +43,13 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['video-click'])
+const emit = defineEmits(['Video-click'])
 
 const gridClass = computed(() => {
   return `grid grid-cols-${props.columns} gap-${props.gap}`
 })
 
 const handleVideoClick = (video) => {
-  emit('video-click', video)
+  emit('Video-click', video)
 }
 </script>

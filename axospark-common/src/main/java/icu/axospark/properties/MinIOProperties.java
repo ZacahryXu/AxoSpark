@@ -59,5 +59,9 @@ public class MinIOProperties {
          * 音频桶名称
          */
         private String audio = "audios";
+        /**
+         * 预上传桶名称
+         */
+        private String tempChunk = "temp-chunks";
     }
 }

@@ -15,4 +15,5 @@ public class VideosDTO {
     private Long categoryId;
     private String filePath;
     private List<String> tagsNames;
+
 }

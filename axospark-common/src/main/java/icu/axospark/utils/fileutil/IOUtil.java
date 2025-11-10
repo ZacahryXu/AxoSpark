@@ -4,6 +4,9 @@ package icu.axospark.utils.fileutil;
 import icu.axospark.properties.MinIOProperties;
 import io.minio.*;
 import io.minio.http.Method;
+import io.minio.messages.DeleteError;
+import io.minio.messages.DeleteObject;
+import io.minio.messages.Item;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,10 @@ import org.springframework.stereotype.Component;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -155,6 +161,34 @@ public class IOUtil {
             throw new RuntimeException("文件删除失败", e);
         }
     }
+    /**
+     * 批量删除文件
+     *
+     * @param bucketName 桶名称
+     * @param deleteObjects 对象名称
+     */
+    public void deleteBatchFiles(String bucketName, List<DeleteObject> deleteObjects) {
+        try {
+            Iterable<Result<DeleteError>> results = minioClient.removeObjects(
+                    RemoveObjectsArgs.builder()
+                            .bucket(bucketName)
+                            .objects(deleteObjects)
+                            .build()
+            );
+
+            // 检查删除结果
+            for (Result<DeleteError> result : results) {
+                DeleteError error = result.get();
+                log.error("文件删除失败: bucket={}, object={}, error={}",
+                        bucketName, error.objectName(), error.message());
+            }
+
+            log.info("批量删除完成: bucket={}, count={}", bucketName, deleteObjects.size());
+        } catch (Exception e) {
+            log.error("批量删除异常: bucket={}, objects={}", bucketName, deleteObjects.size(), e);
+            throw new RuntimeException("文件删除失败", e);
+        }
+    }
 
     /**
      * 获取文件访问URL（永久）
@@ -181,7 +215,7 @@ public class IOUtil {
         try {
             return minioClient.getPresignedObjectUrl(
                     GetPresignedObjectUrlArgs.builder()
-                            .method(Method.GET)
+                            .method(Method.PUT)
                             .bucket(bucketName)
                             .object(objectName)
                             .expiry(expires, TimeUnit.SECONDS)
@@ -237,5 +271,84 @@ public class IOUtil {
             log.error("获取文件信息失败: bucket={}, object={}", bucketName, objectName, e);
             throw new RuntimeException("获取文件信息失败", e);
         }
+    }
+
+    /**
+     * 分块文件合并
+     * @param bucketName 桶名
+     * @param targetObject 目标对象名
+     * @param chunkObjects 分块对象列表
+     * @return
+     */
+    public ObjectWriteResponse composeObject(String bucketName,
+                                             String targetObject,
+                                             List<String> chunkObjects){
+        try{
+            List<ComposeSource> sources = chunkObjects.stream()
+                    .map(chunkName -> ComposeSource.builder()
+                            .bucket(bucketName)
+                            .object(chunkName)
+                            .build())
+                    .toList();
+            return minioClient.composeObject(
+                    ComposeObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(targetObject)
+                            .sources(sources)
+                            .build()
+            );
+        }catch (Exception e){
+            log.error("合并分片失败：bucket={},target={}",bucketName,targetObject,e);
+            throw new RuntimeException("合并分块失败",e);
+        }
+    }
+    /**
+     * 获取某个对象名称前缀下的所有分片
+     *
+     * @param bucketName   桶名称
+     * @param objectPrefix 对象前缀（例如：temp/file123/）
+     * @return 分片对象名称列表
+     */
+    public List<String> listChunks(String bucketName,String objectPrefix){
+        try{
+            ArrayList<String> chunks = new ArrayList<>();
+            Iterable<Result<Item>> results = minioClient.listObjects(
+                    ListObjectsArgs.builder()
+                            .bucket(bucketName)
+                            .prefix(objectPrefix)
+                            .recursive(true)
+                            .build()
+            );
+            for (Result<Item> result : results) {
+                Item item = result.get();
+                chunks.add(item.objectName());
+            }
+            return chunks;
+        }catch (Exception e){
+            log.error("获取分片列表失败：bucket={},prefix={}",bucketName,objectPrefix);
+            throw new RuntimeException("获取分片列表失败",e);
+        }
+    }
+    public void removeChunks(String bucketName,String objectPrefix){
+        try{
+            Iterable<Result<Item>> results = minioClient.listObjects(
+                    ListObjectsArgs.builder()
+                            .bucket(bucketName)
+                            .prefix(objectPrefix)
+                            .recursive(true)
+                            .build()
+            );
+            ArrayList<DeleteObject> deleteObjects = new ArrayList<>();
+            for (Result<Item> result : results) {
+                deleteObjects.add(new DeleteObject(result.get().objectName()));
+            }
+            if(!deleteObjects.isEmpty()){
+                deleteBatchFiles(bucketName,deleteObjects);
+            }
+        }catch (Exception e){
+            log.error("删除分片失败: bucket={}, prefix={}", bucketName, objectPrefix, e);
+            throw new RuntimeException("删除分片失败", e);
+        }
+
     }
 }

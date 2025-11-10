@@ -23,7 +23,8 @@
           <Bell :size="20" />
         </button>
 
-        <button class="glass rounded-xl px-4 py-2 flex items-center gap-2 hover:bg-dark-700 transition">
+        <button class="glass rounded-xl px-4 py-2 flex items-center gap-2 hover:bg-dark-700 transition cursor-pointer"
+                @click="goUpload">
           <Upload :size="20" />
           <span class="text-sm ">投稿</span>
         </button>
@@ -35,6 +36,8 @@
 </template>
 
 <script setup>
+import { useRouter } from "vue-router";
+const router = useRouter();
 import { Bell, Upload } from 'lucide-vue-next'
 import AppLogo from '../common/AppLogo.vue'
 import SearchBar from '../common/SearchBar.vue'
@@ -46,5 +49,9 @@ const navItems = [
   { id: 'bangumi', name: '番剧', active: false },
   { id: 'live', name: '直播', active: false }
 ]
+const goUpload = () => {
+  //路由到creation页面
+  router.push({ name: 'creation' });
+}
 </script>
 

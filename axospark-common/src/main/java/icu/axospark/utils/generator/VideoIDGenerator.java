@@ -155,100 +155,100 @@ public class VideoIDGenerator {
     /**
      * 测试示例
      */
-    public static void main(String[] args) {
-        VideoIDGenerator generator = new VideoIDGenerator();
-        
-        System.out.println("\n" + "=".repeat(60));
-        System.out.println("极简版雪花算法ID生成器演示");
-        System.out.println("=".repeat(60));
-        
-        // 生成单个ID
-        System.out.println("\n【生成视频ID】");
-        long videoId = generator.generate();
-        System.out.println("视频ID: " + videoId);
-        System.out.println("文件名: " + videoId + ".mp4");
-        
-        // 解析ID
-        System.out.println("\n" + "=".repeat(60));
-        System.out.println("【解析ID信息】");
-        System.out.println("=".repeat(60));
-        IDInfo info = parse(videoId);
-        System.out.println(info);
-        
-        // 批量生成
-        System.out.println("\n" + "=".repeat(60));
-        System.out.println("【批量生成10个ID】");
-        System.out.println("=".repeat(60));
-        for (int i = 0; i < 10; i++) {
-            long id = generator.generate();
-            System.out.printf("视频 #%-2d: %d.mp4%n", i + 1, id);
-        }
-        
-        // 验证单调递增性
-        System.out.println("\n" + "=".repeat(60));
-        System.out.println("【验证ID单调递增性】");
-        System.out.println("=".repeat(60));
-        long prev = 0;
-        boolean isMonotonic = true;
-        for (int i = 0; i < 1000; i++) {
-            long id = generator.generate();
-            if (id <= prev) {
-                isMonotonic = false;
-                System.out.println("发现非单调: " + prev + " >= " + id);
-                break;
-            }
-            prev = id;
-        }
-        System.out.println("单调递增性验证: " + (isMonotonic ? "✓ 通过" : "✗ 失败"));
-        
-        // 验证唯一性
-        System.out.println("\n" + "=".repeat(60));
-        System.out.println("【验证ID唯一性】");
-        System.out.println("=".repeat(60));
-        java.util.Set<Long> idSet = new java.util.HashSet<>();
-        int testCount = 10000;
-        for (int i = 0; i < testCount; i++) {
-            long id = generator.generate();
-            if (!idSet.add(id)) {
-                System.out.println("发现重复ID: " + id);
-                break;
-            }
-        }
-        System.out.println(String.format(
-            "生成 %,d 个ID，唯一性验证: %s", 
-            testCount, 
-            idSet.size() == testCount ? "✓ 通过" : "✗ 失败"
-        ));
-        
-        // 性能测试
-        System.out.println("\n" + "=".repeat(60));
-        System.out.println("【性能测试 - 生成100,000个ID】");
-        System.out.println("=".repeat(60));
-        long start = System.currentTimeMillis();
-        int count = 100000;
-        for (int i = 0; i < count; i++) {
-            generator.generate();
-        }
-        long end = System.currentTimeMillis();
-        
-        double duration = (end - start) / 1000.0;
-        System.out.printf("总耗时: %.3f 秒%n", duration);
-        System.out.printf("QPS: %,.0f 个/秒%n", count / duration);
-        System.out.printf("平均耗时: %.3f 微秒/个%n", duration * 1000000 / count);
-        
-        // 模拟实际使用场景
-        System.out.println("\n" + "=".repeat(60));
-        System.out.println("【模拟MinIO视频上传场景】");
-        System.out.println("=".repeat(60));
-        for (int i = 0; i < 5; i++) {
-            long id = generator.generate();
-            String fileName = id + ".mp4";
-            String thumbnailName = id + "_thumb.jpg";
-            
-            System.out.printf(
-                "视频 %d:\n  原视频: %s\n  缩略图: %s\n  上传时间: %s\n\n",
-                i + 1, fileName, thumbnailName, parse(id).getDateTime()
-            );
-        }
-    }
+    // public static void main(String[] args) {
+    //     VideoIDGenerator generator = new VideoIDGenerator();
+    //
+    //     System.out.println("\n" + "=".repeat(60));
+    //     System.out.println("极简版雪花算法ID生成器演示");
+    //     System.out.println("=".repeat(60));
+    //
+    //     // 生成单个ID
+    //     System.out.println("\n【生成视频ID】");
+    //     long videoId = generator.generate();
+    //     System.out.println("视频ID: " + videoId);
+    //     System.out.println("文件名: " + videoId + ".mp4");
+    //
+    //     // 解析ID
+    //     System.out.println("\n" + "=".repeat(60));
+    //     System.out.println("【解析ID信息】");
+    //     System.out.println("=".repeat(60));
+    //     IDInfo info = parse(videoId);
+    //     System.out.println(info);
+    //
+    //     // 批量生成
+    //     System.out.println("\n" + "=".repeat(60));
+    //     System.out.println("【批量生成10个ID】");
+    //     System.out.println("=".repeat(60));
+    //     for (int i = 0; i < 10; i++) {
+    //         long id = generator.generate();
+    //         System.out.printf("视频 #%-2d: %d.mp4%n", i + 1, id);
+    //     }
+    //
+    //     // 验证单调递增性
+    //     System.out.println("\n" + "=".repeat(60));
+    //     System.out.println("【验证ID单调递增性】");
+    //     System.out.println("=".repeat(60));
+    //     long prev = 0;
+    //     boolean isMonotonic = true;
+    //     for (int i = 0; i < 1000; i++) {
+    //         long id = generator.generate();
+    //         if (id <= prev) {
+    //             isMonotonic = false;
+    //             System.out.println("发现非单调: " + prev + " >= " + id);
+    //             break;
+    //         }
+    //         prev = id;
+    //     }
+    //     System.out.println("单调递增性验证: " + (isMonotonic ? "✓ 通过" : "✗ 失败"));
+    //
+    //     // 验证唯一性
+    //     System.out.println("\n" + "=".repeat(60));
+    //     System.out.println("【验证ID唯一性】");
+    //     System.out.println("=".repeat(60));
+    //     java.util.Set<Long> idSet = new java.util.HashSet<>();
+    //     int testCount = 10000;
+    //     for (int i = 0; i < testCount; i++) {
+    //         long id = generator.generate();
+    //         if (!idSet.add(id)) {
+    //             System.out.println("发现重复ID: " + id);
+    //             break;
+    //         }
+    //     }
+    //     System.out.println(String.format(
+    //         "生成 %,d 个ID，唯一性验证: %s",
+    //         testCount,
+    //         idSet.size() == testCount ? "✓ 通过" : "✗ 失败"
+    //     ));
+    //
+    //     // 性能测试
+    //     System.out.println("\n" + "=".repeat(60));
+    //     System.out.println("【性能测试 - 生成100,000个ID】");
+    //     System.out.println("=".repeat(60));
+    //     long start = System.currentTimeMillis();
+    //     int count = 100000;
+    //     for (int i = 0; i < count; i++) {
+    //         generator.generate();
+    //     }
+    //     long end = System.currentTimeMillis();
+    //
+    //     double duration = (end - start) / 1000.0;
+    //     System.out.printf("总耗时: %.3f 秒%n", duration);
+    //     System.out.printf("QPS: %,.0f 个/秒%n", count / duration);
+    //     System.out.printf("平均耗时: %.3f 微秒/个%n", duration * 1000000 / count);
+    //
+    //     // 模拟实际使用场景
+    //     System.out.println("\n" + "=".repeat(60));
+    //     System.out.println("【模拟MinIO视频上传场景】");
+    //     System.out.println("=".repeat(60));
+    //     for (int i = 0; i < 5; i++) {
+    //         long id = generator.generate();
+    //         String fileName = id + ".mp4";
+    //         String thumbnailName = id + "_thumb.jpg";
+    //
+    //         System.out.printf(
+    //             "视频 %d:\n  原视频: %s\n  缩略图: %s\n  上传时间: %s\n\n",
+    //             i + 1, fileName, thumbnailName, parse(id).getDateTime()
+    //         );
+    //     }
+    // }
 }

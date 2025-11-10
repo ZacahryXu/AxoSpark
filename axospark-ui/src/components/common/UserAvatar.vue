@@ -58,7 +58,7 @@ const props = defineProps({
 })
 
 const avatarClass = computed(() => {
-  const baseClass = 'rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center bg-cover bg-center'
+  const baseClass = 'rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center bg-cover bg-center cursor-pointer'
   const sizes = {
     sm: 'w-7 h-7',
     md: 'w-9 h-9',

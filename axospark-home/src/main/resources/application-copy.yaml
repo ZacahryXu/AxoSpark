@@ -11,6 +11,29 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+  rabbitmq:
+    host: 192.168.119.100
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /video-handler
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    listener:
+      simple:
+        acknowledge-mode: auto
+        prefetch: 1
+        retry:
+          enabled: true
+          initial-interval: 3000
+          max-attempts: 3
+          multiplier: 2
+  data:
+    redis:
+      host: 192.168.119.100
+      connect-timeout: 10000ms
+      port: 6380
+
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -50,13 +73,15 @@ knife4j:
 axospark:
   #存储策略，所有视频都在同一个桶中，每个视频按照年/月/用户ID/视频ID.mp4 保存，视频ID使用雪花算法
   minio:
-    access-key: ak
-    secret-key: sk
-    endpoint: http://<ip>:<port>
+    access-key: <ak>
+    secret-key: <sk>
+    endpoint: http://<ip>:9000
     bucket:
       video: videos
       image: images
       document: documents
+      temp-chunk: temp-chunks
+
 
 
 

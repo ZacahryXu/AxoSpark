@@ -1,11 +1,13 @@
 package icu.axospark.service.iml;
 
 import icu.axospark.mapper.*;
+import icu.axospark.mq.producer.VideoTranscodeProducer;
 import icu.axospark.pojo.dto.VideosDTO;
 import icu.axospark.pojo.entity.Users;
 import icu.axospark.pojo.entity.VideoTagRelations;
 import icu.axospark.pojo.entity.VideoTags;
 import icu.axospark.pojo.entity.Videos;
+import icu.axospark.pojo.message.VideoMessage;
 import icu.axospark.pojo.vo.VideosVO;
 import icu.axospark.properties.MinIOProperties;
 import icu.axospark.service.VideoUploadService;
@@ -37,6 +39,8 @@ public class VideoUploadServiceImpl implements VideoUploadService {
     private VideoTagsMapper videoTagsMapper;
     @Autowired
     private VideoTagRelationsMapper videoTagRelationsMapper;
+    @Autowired
+    private VideoTranscodeProducer videoTranscodeProducer;
     /**
      * 视频上传
      * @param videoFile 视频上传文件信息
@@ -76,6 +80,9 @@ public class VideoUploadServiceImpl implements VideoUploadService {
         ZonedDateTime zonedDateTime = ioUtil.fileInfo(minioProperties.getBucket().getVideo(), object).lastModified();
         videos.setCreateTime(zonedDateTime.toLocalDateTime());
         videosMapper.insert(videos);
+        VideoMessage videoMessage = new VideoMessage();
+        videoMessage.setVideoId(videoId);
+        videoTranscodeProducer.sendTranscodeTask(videoMessage);
         VideosVO videosVO = new VideosVO();
         videosVO.setId(videoId);
         videosVO.setCreateTime(zonedDateTime.toLocalDateTime());
